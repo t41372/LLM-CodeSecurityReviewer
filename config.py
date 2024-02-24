@@ -25,7 +25,7 @@ LLM = Ollama(base_url=base_url, verbose=True, model="deepseek-coder:6.7b", syste
 
 
 def generate(prompt: str, currentContext=None, system=None, displayStreamText=True):
-    LLM.generateWithMemory(
+    return LLM.generateWithMemory(
         prompt=prompt,
         currentContext=currentContext,
         system=system,

@@ -25,16 +25,24 @@ def evaluateCodeFile(file_path):
     prompt = "File Path: " + file_path + "\n\nCode Content:\n\n" + code_content
 
     # Call Ollama using litellm
-    config.generate(prompt=prompt, system=system_prompt)
+    report = config.generate(prompt=prompt, system=system_prompt)
 
-def FakeevaluateCodeFile(file_path):
-    print("Evaluating code file: " + file_path)
+
+    print("Report Saved to reports/code_security_report-" + os.path.basename(file_path) + ".txt", end="\n\n")
+    writeToFile("reports", f"code_security_report-{os.path.basename(file_path)}.md", report)
+
 
 
 def writeToFile(dir_path, file_name, content):
+    if(content == None):
+        print("Content is None")
+        return
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
     file_path = os.path.join(dir_path, file_name)
-    with open(file_path, "a") as file:
-        file.write(content)
+    file = open(file_path, "a")
+    file.write(content)
+    file.close()
 
 
 # Example usage
