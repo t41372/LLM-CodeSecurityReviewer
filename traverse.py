@@ -1,8 +1,16 @@
 import os
 import datetime
 import reviewFile
+from config import FILE_TO_IGNORE, DIR_TO_IGNORE
 
 
+
+
+# Start with an entrypoint and traverse all the related files
+
+
+
+# Scan all the files in the directory and its subdirectories
 def traverse_directory(path, ignore_folders=[], ignore_files=[]):
     for root, dirs, files in os.walk(path):
         # Exclude specified folders
@@ -14,7 +22,8 @@ def traverse_directory(path, ignore_folders=[], ignore_files=[]):
         allReports = ""
 
         for file in files:
-            if file not in ignore_files:
+            if file not in ignore_files and file not in ignore_folders:
+                print(f"Processing {file}, which is NOT present in {ignore_files}...")
                 file_path = os.path.join(root, file)
                 report = reviewFile.evaluateCodeFile(file_path)
                 if report == None:
@@ -51,6 +60,6 @@ def writeToFile(dir_path, file_name, content):
 
 def main():
     path = input("Enter the path of the directory: ")
-    traverse_directory(path, ignore_folders=[".git", "venv", "node_modules", ".conda", "__pycache__"], ignore_files=[".DS_Store", "Thumbs.db"])
+    traverse_directory(path, ignore_folders=DIR_TO_IGNORE, ignore_files=FILE_TO_IGNORE)
 
 main()
