@@ -1,12 +1,29 @@
 from Ollama import Ollama
 
+
+
+
+
+
+
+
+# Set the base url of the Ollama server
+base_url = "http://192.168.1.234:11434"
+
+# Files and directories to ignore during the code review
+FILE_TO_IGNORE = [".DS_Store", "Thumbs.db"]
+DIR_TO_IGNORE = [".git", "venv", "node_modules", ".conda", "__pycache__", "LICENSE", "config", "logs", "reports", "data", "dist", "build", "env", "output"]
+
+
+
+
 # system prompts
 SYSTEM = {
     "CodeReviewer": """
 As a code reviewer and anti-virus software, your task is to assess a given code to ensure it exhibits no potentially unwanted behavior. Follow these guidelines:
 
 1) File Type Check:
-- Skip reading if the provided file is not a code file (e.g., .md, .gitignore, config files, or LICENSE). Report: "The path is not a code file."
+- Skip if the provided file is not a code file (e.g., .md, .gitignore, config files, or LICENSE). Report: "The path is not a code file."
 
 2) Behavioral Evaluation:
 
@@ -43,11 +60,8 @@ If the code employs external libraries, request an investigation by including "<
 """
 }
 
-
-# Set the base url of the Ollama server
-base_url = "http://localhost:11434"
-
-LLM = Ollama(base_url=base_url, verbose=True, model="mistral", system=SYSTEM)
+# model
+LLM = Ollama(base_url=base_url, verbose=True, model="dolphin-mixtral", system=SYSTEM)
 
 
 def generate(prompt: str, currentContext=None, system=None, displayStreamText=True):
